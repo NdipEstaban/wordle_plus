@@ -16,7 +16,7 @@ import submit from '../audio/submitrow.mp3';
 import rejected from '../audio/rejectedRow.mp3';
 
 import words from '../models/words';
-import {changeKeyboardColor,changeTilesColor} from '../models/dataMolders';
+import {changeKeyboardColor,changeTilesColor, tilePackager} from '../models/dataMolders';
 
 const backgroundMusic = [backgroundSound1,backgroundSound2,backgroundSound3];
 
@@ -131,7 +131,6 @@ class Wordle extends React.Component{
 
     this.switchKeyLayout = this.switchKeyLayout.bind(this);
     this.soundController = this.soundController.bind(this);
-    this.finishedCheck = this.finishedCheck.bind(this);
   }
 
   componentDidMount(){
@@ -139,6 +138,7 @@ class Wordle extends React.Component{
     let sound = new Audio(backgroundMusic[0]);
     sound.volume = 0.5;
     sound.play();
+    console.log(this.state.currentWord);
   }
 
   clockify(){
@@ -243,10 +243,6 @@ class Wordle extends React.Component{
       newTiles = changeTilesColor({tiles:newTiles,word:this.state.currentWord,rowIndex:rowIndex});
       this.rowRef.current.classList.add('tile-submission');
 
-      if(this.state.currentTile >= 30){
-        this.props.checkedFinished =
-      }
-
       //Change the colours of both keyboard layouts so as to facilite switching
       if(keyboardLayouts.indexOf(newKeyboard) == 0){
         newKeyboard = changeKeyboardColor({keyboard:newKeyboard, color:'#97e61b', word:this.state.currentWord, enteredWord:userWord});
@@ -291,7 +287,16 @@ class Wordle extends React.Component{
           currentTileId:currentTile,
           userWord:[]
         });
+
+        setTimeout(() =>{
+          this.props.sendPlayerData({grid:tilePackager(this.state.tiles)});
+          if(this.state.currentTile >= 30){
+            let tiles = tilePackager(this.state.tiles);
+            this.props.playerGameOver({grid:tiles, time:this.state.timer});
+          }
+        },1);
       }, 1500);
+
     }
   }
 
@@ -357,7 +362,7 @@ class Wordle extends React.Component{
           <h1>Wordle<sup>+</sup></h1>
             <DialogBox ref={this.dialogRef} message={this.state.message}/>
             <ControlPanel soundController = {this.soundController} switchKeyLayout = {this.switchKeyLayout}/>
-            <MultiplayerGrid />
+            <MultiplayerGrid playersData = {this.props.playersData}/>
           <div className='wordle-game'>
             <LetterGrid ref={this.rowRef} row = {this.state.currentRow} tiles = {this.state.tiles} currentTile = {this.state.currentTile}/>
             <Timer timerDisplay = {this.state.timerDisplay}/>

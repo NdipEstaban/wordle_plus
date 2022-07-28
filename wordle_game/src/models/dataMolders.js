@@ -22,6 +22,9 @@ export const tilePackager = (tiles) => {
         }
         packedTiles.push(row);
     }
+    console.log(`this are packaged tiles ${packedTiles}`);
+
+    return packedTiles;
 };
 
 export function changeKeyboardColor({keyboard = 1, color = 2, word = 3, enteredWord = 4} = {}){

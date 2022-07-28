@@ -146,9 +146,9 @@ class MultiplayerGrid extends React.Component{
                 </button>
 
                 <ul ref={this.playersRef}>
-                    {modelPlayers.map((player) => {
+                    {this.props.playersData.map((player, index) => {
                       return (
-                        <li className='player-card'>
+                        <li key={player.name} className='player-card'>
                           <div className ="player-grid">
                             {player.grid.map((row) => {
                               return (
