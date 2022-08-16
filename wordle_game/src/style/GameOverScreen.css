@@ -1,0 +1,144 @@
+.game-over-container{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%, -50%);
+}
+
+.game-over h3{
+    margin:0;
+}
+
+.game-over h1{
+    font-size:2.2rem;
+    margin:0;
+    padding:0;
+}
+
+.game-emoji{
+    font-size:25rem;
+    position:absolute;
+    top:49%;
+    left:50%;
+    transform:translate(-50%, -50%);
+}
+
+.game-over{
+    background:rgba(82, 82, 82, 0.5);
+    backdrop-filter: blur(8px);
+    width:50rem;
+    height:42rem;
+
+    
+    border-radius:10px;
+    z-index: 2;
+
+    display:grid;
+    grid-template:100%/30% 70%;
+}
+
+.game-over .player-details{
+    grid-row:1;
+    grid-column: 1;
+    width:100%;
+    background:rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    font-size:2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius:10px 0px 0px 10px;
+    text-align: center;
+}
+
+.game-over .word-details{
+    font-size:2rem;
+    padding:1rem;
+    color:white;
+}
+
+.word-details .word-defn, .word-examples{
+    margin-top:4rem;
+}
+
+.word-details h4{
+    margin:0.5rem;
+}
+
+
+
+.game-over .word{
+    margin-top:2.5rem;
+    font-size:2.5rem;
+    font-weight: bold;
+    text-transform:uppercase;
+    text-align:center;
+    display:flex;
+    flex-direction:row;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-over .word .word-tile{
+    width:2rem;
+    height:2rem;
+    background:rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    margin:0rem 0.5rem;
+    color:black;
+    height:4rem;
+    width:4rem;
+    border:0;
+    border-radius:5px;
+
+}
+
+.game-over .word-defn{
+    margin-bottom:2rem;
+}
+
+.game-over table{
+    overflow: auto;
+    width:100%;
+}
+
+.game-over tr{
+    text-align: center;
+    color:white;
+    margin:0;
+}
+
+.game-over th{
+    font-size:1.6rem;
+}
+
+.game-over tr td{
+    font-size:1.5rem;
+}
+
+.game-over-card{
+    background: gray;
+    border-radius:10px;
+}
+
+.game-over-btns{
+    width:100%;
+    margin-top:1.5rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.game-over-btns button{
+    width:45%;
+    height:4rem;
+    border:0;
+    border-radius:10px;
+    font-weight: bold;
+    font-size:1.6rem;
+
+}
+
+
+
+

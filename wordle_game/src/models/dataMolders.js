@@ -22,10 +22,35 @@ export const tilePackager = (tiles) => {
         }
         packedTiles.push(row);
     }
-    console.log(`this are packaged tiles ${packedTiles}`);
 
     return packedTiles;
 };
+
+export function multiplayerCardPackager(tiles, currentRow){
+    let packedTiles = [];
+
+    for(let i = 0; i < tiles.length;i++){
+        let row = [];
+        if(i == currentRow){
+            break;
+        }else{
+            for(let j = 0; j < tiles[i].length; j++){
+                let tileColor;
+                if(tiles[i][j].color == green){
+                    tileColor = green;
+                }else if(tiles[i][j].color === orange){
+                    tileColor = orange;
+                }else{
+                    tileColor = '';
+                }
+                row.push(tileColor);
+            }
+        }
+        packedTiles.push(row);
+    }
+
+    return packedTiles;
+}
 
 export function changeKeyboardColor({keyboard = 1, color = 2, word = 3, enteredWord = 4} = {}){
     console.log(enteredWord);

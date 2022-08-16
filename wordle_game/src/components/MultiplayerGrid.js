@@ -111,11 +111,7 @@ class MultiplayerGrid extends React.Component{
     constructor(props){
         super(props);
 
-        this.state = {};
-        this.playersRef = React.createRef();
-
-        this.moveGrid = this.moveGrid.bind(this);
-        
+        this.playersRef = React.createRef();        
     }
 
     componentDidMount(){
@@ -132,11 +128,7 @@ class MultiplayerGrid extends React.Component{
       };
 
       scrolldelay = setInterval(scroll,100);
-    }
-
-    moveGrid(direction){
-      console.log("hello");
-    }
+    }    
 
     render(){
         return(
@@ -146,7 +138,7 @@ class MultiplayerGrid extends React.Component{
                 </button>
 
                 <ul ref={this.playersRef}>
-                    {this.props.playersData.map((player, index) => {
+                    {this.props.playersData.map((player) => {
                       return (
                         <li key={player.name} className='player-card'>
                           <div className ="player-grid">

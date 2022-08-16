@@ -1,4 +1,8 @@
-import React from 'react'
+import React from 'react';
+
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPeopleGroup} from '@fortawesome/free-solid-svg-icons';
+
 
 class DialogBox extends React.Component{
     constructor(props){
@@ -8,6 +12,7 @@ class DialogBox extends React.Component{
     render(){
         return(
             <div className="dialog-box" ref={this.props.dialogRef}>
+                <FontAwesomeIcon icon={faPeopleGroup}></FontAwesomeIcon>
                 <div className='dialog-box-text'>{this.props.message}</div>
             </div>
         )

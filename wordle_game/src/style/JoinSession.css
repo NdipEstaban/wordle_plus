@@ -1,0 +1,63 @@
+.join-session{
+    position: absolute;
+    left:50%;
+    top:45%;
+    transform:translate(-50%, -50%);
+
+    width:30rem;
+    height: 20rem;
+    background: rgba(255, 255,255, 0.5);
+    backdrop-filter:blur(10px);
+    border:0;
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+label{
+    display: flex;
+    flex-direction: column;
+    font-size:2.5rem;
+    margin-bottom: 3rem;
+}
+
+input{
+    border:0;
+    border-radius:5px;
+    width:25rem;
+    height:2.5rem;
+}
+
+input:focus{
+    outline: none;
+}
+
+.form button{
+    font-size:2rem;
+    width:25rem;
+    height:5.5rem;
+    border:0;
+    border-radius:10px;
+    background:white;
+    font-weight: bold;
+}
+
+.form button:hover{
+    background:rgb(196, 233, 255);
+    border:1px solid white;
+    transform:scale(1.1);
+}
+
+.form button:active{
+    background:#97e61b;
+}

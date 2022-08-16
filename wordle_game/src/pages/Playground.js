@@ -1,6 +1,9 @@
 import React from 'react';
 import '../style/Playground.css';
 
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPeopleGroup} from '@fortawesome/free-solid-svg-icons';
+
 import DialogBox from '../components/DialogBox';
 import LetterGrid from '../components/LetterGrid';
 import Keyboard from '../components/Keyboard';
@@ -16,7 +19,8 @@ import submit from '../audio/submitrow.mp3';
 import rejected from '../audio/rejectedRow.mp3';
 
 import words from '../models/words';
-import {changeKeyboardColor,changeTilesColor, tilePackager} from '../models/dataMolders';
+
+import {changeKeyboardColor,changeTilesColor, tilePackager, multiplayerCardPackager} from '../models/dataMolders';
 
 const backgroundMusic = [backgroundSound1,backgroundSound2,backgroundSound3];
 
@@ -30,8 +34,6 @@ rejectedRow.volume = 0.8;
 
 
 //picking out a random word from the words.js file
-
-var currentWord = words.wordList[Math.floor(Math.random() * words.wordList.length)];
 
 //In the tiles array each array is a row and object corresponds to a tile
 const tiles = [
@@ -97,7 +99,7 @@ var azertyLayout = [
 var keyboardLayouts = [qwertyLayout, azertyLayout];
 
 var interval;
-let sound = new Audio(backgroundSound2);
+let sound = new Audio(backgroundMusic[0]);
 
 class Wordle extends React.Component{
   constructor(props){
@@ -109,10 +111,9 @@ class Wordle extends React.Component{
     this.state = {
       tiles:tiles,
       currentTile:1,
-      currentWord:currentWord.toUpperCase(),
+      currentWord:this.props.word,
       currentWordIndex:0,
       deleted:false,
-      foundTiles:'',
       timer:0,
       timerDisplay:'0:0',
       started:true,
@@ -122,6 +123,8 @@ class Wordle extends React.Component{
       userWord:[],
       message:'',
       currentTileId:1,
+      multiplayer:this.props.multiplayer,
+      playing:false,
     };
 
     this.handleKeyInput = this.handleKeyInput.bind(this);
@@ -134,33 +137,55 @@ class Wordle extends React.Component{
   }
 
   componentDidMount(){
-    console.clear();
-    let sound = new Audio(backgroundMusic[0]);
+    //Launch the background sound
     sound.volume = 0.5;
     sound.play();
-    console.log(this.state.currentWord);
+    sound.loop = true;
+
+    //Display dialogue box with multiplayer key
+    if(this.props.multiplayer == true){
+      setTimeout(() => {
+        this.setState({
+          ...this.state,
+          message:`Multiplayer key: \n\n${this.props.sessionKey}`
+        });
+      }, 200);
+      
+      setTimeout(() => {
+        this.dialogRef.current.classList.add('dialog-box-display');
+      }, 500);
+
+      setTimeout(() => {
+        this.dialogRef.current.classList.remove('dialog-box-display');
+      }, 5000);
+    }
+
+    console.clear();
+  }
+
+  componentWillUnmount(){
+    sound.pause();
   }
 
   clockify(){
-    if(this.state.started){
-      if(this.state.foundTiles >= 4 || this.state.currentTile >= 30){
-        //Timer stops when number of found letters is 5 or when user gets to the last letter tile
-        clearInterval(interval);
-      }else{
-        interval = setInterval(() => {
-          let minutes = (this.state.timer <= 60)? 0:Math.round(this.state.timer/60);
-          let seconds = this.state.timer % 60;
-          this.setState({
-            ...this.state,
-            timer:this.state.timer + 1,
-            timerDisplay:`${minutes}:${seconds}`
-          });
-        },995);
-      }
-    }
+    interval = setInterval(() => {
+      let minutes = (this.state.timer <= 60)? 0:Math.round(this.state.timer/60);
+      let seconds = this.state.timer % 60;
+      this.setState({
+         ...this.state,
+        timer:this.state.timer + 1,
+        timerDisplay:`${minutes}:${seconds}`
+      });
+    },995);
   }
 
   handleKeyInput(e){
+    let playing = this.state.playing;
+    if(this.state.playing == false){
+      this.clockify();
+      playing = true;
+    }
+
     clickSound.play();
     let input = e.target.value;
     let currentTile = /*(this.state.deleted == true)?this.state.currentTile + 1:*/this.state.currentTile;
@@ -185,6 +210,7 @@ class Wordle extends React.Component{
         currentTile:nextTile,
         userWord:[...this.state.userWord, input],
         deleted:false,
+        playing:playing
       });
     }
 
@@ -240,8 +266,28 @@ class Wordle extends React.Component{
 
     }else{
       submitRow.play();
+      //Change the color of the tiles accordingly and add submission animation
       newTiles = changeTilesColor({tiles:newTiles,word:this.state.currentWord,rowIndex:rowIndex});
       this.rowRef.current.classList.add('tile-submission');
+
+      //Stop timer
+      if(this.state.userWord.join('') == this.state.currentWord || this.state.currentTile >= 30){
+        //Timer stops when number of found letters is 5 or when user gets to the last letter tile
+        clearInterval(interval);
+        let playerWon = this.state.userWord.join('') == this.state.currentWord?true:false;
+        
+
+        //if in multiplayer mode send tiles to server when finished game
+        setTimeout(() => {
+          if(this.props.multiplayer == true){
+            let tiles = tilePackager(this.state.tiles);
+            this.props.playerGameOver({grid:tiles, time:this.state.timer, row:this.state.currentRow});
+            console.log('game finished');
+          }
+          this.props.setPlayersStats({row:this.state.currentRow, time:this.state.timerDisplay, win:playerWon, grid:tilePackager(this.state.tiles)});
+          this.props.navigate('/gameover');
+        }, 1550);    
+      }
 
       //Change the colours of both keyboard layouts so as to facilite switching
       if(keyboardLayouts.indexOf(newKeyboard) == 0){
@@ -289,10 +335,9 @@ class Wordle extends React.Component{
         });
 
         setTimeout(() =>{
-          this.props.sendPlayerData({grid:tilePackager(this.state.tiles)});
-          if(this.state.currentTile >= 30){
-            let tiles = tilePackager(this.state.tiles);
-            this.props.playerGameOver({grid:tiles, time:this.state.timer});
+          //send players data if in multiplayer mode
+          if(this.props.multiplayer == true){
+            this.props.sendPlayerData({grid:multiplayerCardPackager(this.state.tiles, this.state.currentRow)});
           }
         },1);
       }, 1500);
@@ -349,20 +394,20 @@ class Wordle extends React.Component{
 
   soundController(n){
     clickSound.play();
-    if(n == true){
+    if(n == false){
       sound.volume = 0;
     }else{
-      sound.volume = 1;
+      sound.volume = 0.5;
     }
   }
 
   render(){
     return(
         <div>
-          <h1>Wordle<sup>+</sup></h1>
+          <h1 className='playground-title'>Wordle<sup>+</sup></h1>
             <DialogBox ref={this.dialogRef} message={this.state.message}/>
-            <ControlPanel soundController = {this.soundController} switchKeyLayout = {this.switchKeyLayout}/>
-            <MultiplayerGrid playersData = {this.props.playersData}/>
+            <ControlPanel multiplayer={this.props.multiplayer} sessionKey={this.props.sessionKey} soundController = {this.soundController} switchKeyLayout = {this.switchKeyLayout}/>
+            {this.state.multiplayer == true?<MultiplayerGrid playersData = {this.props.playersData}/>:''}
           <div className='wordle-game'>
             <LetterGrid ref={this.rowRef} row = {this.state.currentRow} tiles = {this.state.tiles} currentTile = {this.state.currentTile}/>
             <Timer timerDisplay = {this.state.timerDisplay}/>
