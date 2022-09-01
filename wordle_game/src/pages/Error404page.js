@@ -24,7 +24,7 @@ class Error404 extends React.Component{
             <div className='error-page'>
                 <img className='error-logo' src={Logo} alt='game-logo' />
                 <h1>Error 404</h1>
-                <h2>Sorry, this page is not available right now, please head to the homepage</h2>
+                <h2>Oops, this page is not available right now, please head to the homepage</h2>
                 <button onClick={() => {this.navigateHome()}}>Go to home page</button>
             </div>
         );

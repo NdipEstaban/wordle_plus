@@ -71,6 +71,10 @@ io.on("connection", (socket) => {
             io.to(socket.id).emit('session_non_existent', {session:false});
         }
     });
+
+    socket.on("update_word", (data) => {
+
+    })
 });
 
 
@@ -156,3 +160,4 @@ function addFinishedPlayers(row, key, playerName, grid, timeInSeconds, rooms){
 
     return {updatedRooms:newArr, playersRoom:currentRoom};
 }
+

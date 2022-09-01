@@ -11,21 +11,13 @@ class GameGuide extends React.Component{
 
         this.state={
             open:true
-        }
-        this.closeGuide = this.closeGuide.bind(this);
-    }
-
-    closeGuide(){
-        this.setState({
-            ...this.state,
-            open:false
-        })
+        };
     }
 
     render(){
         return(
             <div className="game-guide">
-            <button id='close-btn' onClick={this.closeGuide()}>X</button>
+            <button id='close-btn' onClick={() => this.props.toggleGameGuide()}>X</button>
             <h1>HOW TO PLAY 😊</h1>
             <p>You have 6 attempts to guess the mystery word</p>
             <p>Each gues must be a valid 5-letter English word</p>
@@ -91,12 +83,12 @@ class GameGuide extends React.Component{
                     Y
                 </div>
             </div>
-            <p>The letter N is not found anywhere in the word</p>
+            <p>Non of the letters are found in the word no visible change</p>
             <h2>Wordle+ is fun with friends🤗</h2>
             <p>
                 Play up to 10 at the same time and see who solves the wordle first.
                 You can obtain your session key from the <FontAwesomeIcon icon={faPeopleGroup} />
-                button. Learn new words while having fun😁 
+                button to invite your friends🤗. Learn new words while having fun😁 
             </p>
         </div>
         )

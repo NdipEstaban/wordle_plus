@@ -1,7 +1,9 @@
 import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import logo from "../img/wordle-logo.png";
 import {faVolumeHigh, faVolumeMute,faPeopleGroup,faKeyboard, faQuestion} from "@fortawesome/free-solid-svg-icons";
 
+import { invitePlayer } from "../models/dataMolders";
 import click from '../audio/click.mp3';
 
 let clickSound = new Audio(click);
@@ -35,6 +37,9 @@ class ControlPanel extends React.Component{
     multiplayerKey(){
         clickSound.play();
 
+        navigator.clipboard.writeText(this.props.sessionKey);
+        invitePlayer(this.props.sessionKey);
+        
         this.setState({
             ...this.state,
             key:true
@@ -64,7 +69,7 @@ class ControlPanel extends React.Component{
     render(){
         return(
             <div className='control-panel'>
-                <h2>WDLE</h2>
+                <img className='control-panel-logo' src={logo} alt='wordle game logo'/>
                 {this.props.multiplayer == true?
                 <button ref={this.multiplayerKeyRef} onClick = {() => this.multiplayerKey()} name='end-session'>
                     <FontAwesomeIcon icon={faPeopleGroup}></FontAwesomeIcon> 
@@ -77,11 +82,9 @@ class ControlPanel extends React.Component{
                 <button name='mute-btn' onClick = {() => this.controlSound()}>
                     <FontAwesomeIcon icon={this.state.muted == true?faVolumeMute:faVolumeHigh}></FontAwesomeIcon>
                 </button>
-                <button name='restart'>
+                <button name='game-guide' onClick={() => this.props.toggleGameGuide()}>
                     <FontAwesomeIcon icon={faQuestion}></FontAwesomeIcon>
-                </button>
-                
-                
+                </button>  
             </div>
         )
     }

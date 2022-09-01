@@ -10,6 +10,8 @@ import Keyboard from '../components/Keyboard';
 import ControlPanel from '../components/ControlPanel';
 import Timer from '../components/Timer';
 import MultiplayerGrid from '../components/MultiplayerGrid';
+import GameGuide from "../components/GameGuide";
+import Loader from '../components/Loader';
 
 import backgroundSound1 from '../audio/background-sound-1.mp3';
 import backgroundSound2 from '../audio/vacation.mp3';
@@ -38,46 +40,46 @@ rejectedRow.volume = 0.8;
 //In the tiles array each array is a row and object corresponds to a tile
 const tiles = [
   [
-    {id:1, value:`t7`, color:''},
-    {id:2, value:`t1`, color:''},
-    {id:3, value:`t1`, color:''},
-    {id:4, value:`t1`, color:''},
-    {id:5, value:`t1`, color:''}
+    {id:1, value:``, color:''},
+    {id:2, value:``, color:''},
+    {id:3, value:``, color:''},
+    {id:4, value:``, color:''},
+    {id:5, value:``, color:''}
   ],
   [
-    {id:6, value:`t7`, color:''},
-    {id:7, value:`t1`, color:''},
-    {id:8, value:`t2`, color:''},
-    {id:9, value:`t1`, color:''},
-    {id:10, value:`t1`, color:''}
+    {id:6, value:``, color:''},
+    {id:7, value:``, color:''},
+    {id:8, value:``, color:''},
+    {id:9, value:``, color:''},
+    {id:10, value:``, color:''}
   ],
   [
-    {id:11, value:`t7`, color:''},
-    {id:12, value:`t1`, color:''},
-    {id:13, value:`t3`, color:''},
-    {id:14, value:`t1`, color:''},
-    {id:15, value:`t1`, color:''}
+    {id:11, value:``, color:''},
+    {id:12, value:``, color:''},
+    {id:13, value:``, color:''},
+    {id:14, value:``, color:''},
+    {id:15, value:``, color:''}
   ],
   [
-    {id:16, value:`t7`, color:''},
-    {id:17, value:`t1`, color:''},
-    {id:18, value:`t4`, color:''},
-    {id:19, value:`t1`, color:''},
-    {id:20, value:`t1`, color:''}
+    {id:16, value:``, color:''},
+    {id:17, value:``, color:''},
+    {id:18, value:``, color:''},
+    {id:19, value:``, color:''},
+    {id:20, value:``, color:''}
   ],
     [
-    {id:21, value:`t7`, color:''},
-    {id:22, value:`t1`, color:''},
-    {id:23, value:`t5`, color:''},
-    {id:24, value:`t1`, color:''},
-    {id:25, value:`t1`, color:''}
+    {id:21, value:``, color:''},
+    {id:22, value:``, color:''},
+    {id:23, value:``, color:''},
+    {id:24, value:``, color:''},
+    {id:25, value:``, color:''}
   ],
   [
-    {id:26, value:`t7`, color:''},
-    {id:27, value:`t1`, color:''},
-    {id:28, value:`t6`, color:''},
-    {id:29, value:`t1`, color:''},
-    {id:30, value:`t1`, color:''}
+    {id:26, value:``, color:''},
+    {id:27, value:``, color:''},
+    {id:28, value:``, color:''},
+    {id:29, value:``, color:''},
+    {id:30, value:``, color:''}
   ],
 ];
 
@@ -125,18 +127,42 @@ class Wordle extends React.Component{
       currentTileId:1,
       multiplayer:this.props.multiplayer,
       playing:false,
+      gameGuide:false,
+      loaded:false,
     };
 
     this.handleKeyInput = this.handleKeyInput.bind(this);
     this.delete = this.delete.bind(this);
     this.submit = this.submit.bind(this);
     this.clockify = this.clockify.bind(this);
+    this.toggleGameGuide = this.toggleGameGuide.bind(this);
 
     this.switchKeyLayout = this.switchKeyLayout.bind(this);
     this.soundController = this.soundController.bind(this);
   }
 
   componentDidMount(){
+        /*Reset the state each time the playground mounts so when the player tries to return to page the data is refreshed */
+        this.setState({
+          ...this.state,
+          tiles:tiles,
+          currentTile:1,
+          currentWord:this.props.word,
+          currentWordIndex:0,
+          deleted:false,
+          timer:0,
+          timerDisplay:'0:0',
+          started:true,
+          currentRow:0,
+          keyLayout:keyboardLayouts[0],
+          currentKeyboardIndex:0,
+          userWord:[],
+          currentTileId:1,
+          multiplayer:this.props.multiplayer,
+          playing:false,
+          gameGuide:false,
+        });
+        
     //Launch the background sound
     sound.volume = 0.5;
     sound.play();
@@ -147,7 +173,8 @@ class Wordle extends React.Component{
       setTimeout(() => {
         this.setState({
           ...this.state,
-          message:`Multiplayer key: \n\n${this.props.sessionKey}`
+          message:`Multiplayer key: \n\n${this.props.sessionKey}`,
+          loaded:true,
         });
       }, 200);
       
@@ -158,6 +185,11 @@ class Wordle extends React.Component{
       setTimeout(() => {
         this.dialogRef.current.classList.remove('dialog-box-display');
       }, 5000);
+    }else{
+      this.setState({
+        ...this.state,
+        loaded:true,
+      })
     }
 
     console.clear();
@@ -279,12 +311,12 @@ class Wordle extends React.Component{
 
         //if in multiplayer mode send tiles to server when finished game
         setTimeout(() => {
+          let tiles = tilePackager(this.state.tiles);
           if(this.props.multiplayer == true){
-            let tiles = tilePackager(this.state.tiles);
-            this.props.playerGameOver({grid:tiles, time:this.state.timer, row:this.state.currentRow});
+            this.props.playerGameOver({grid:tiles, time:this.state.timer - 1, row:this.state.currentRow});
             console.log('game finished');
           }
-          this.props.setPlayersStats({row:this.state.currentRow, time:this.state.timerDisplay, win:playerWon, grid:tilePackager(this.state.tiles)});
+          this.props.setPlayersStats({row:this.state.currentRow, time:this.state.timerDisplay, win:playerWon, grid:tiles});
           this.props.navigate('/gameover');
         }, 1550);    
       }
@@ -401,12 +433,20 @@ class Wordle extends React.Component{
     }
   }
 
+  toggleGameGuide(){
+    this.setState({
+      ...this.state,
+      gameGuide:!this.state.gameGuide,
+    });
+  }
+
   render(){
     return(
+        this.state.loaded == true?
         <div>
-          <h1 className='playground-title'>Wordle<sup>+</sup></h1>
+          {this.state.gameGuide == true?<GameGuide toggleGameGuide={this.toggleGameGuide}/>:''}
             <DialogBox ref={this.dialogRef} message={this.state.message}/>
-            <ControlPanel multiplayer={this.props.multiplayer} sessionKey={this.props.sessionKey} soundController = {this.soundController} switchKeyLayout = {this.switchKeyLayout}/>
+            <ControlPanel multiplayer={this.props.multiplayer} toggleGameGuide={this.toggleGameGuide} sessionKey={this.props.sessionKey} soundController = {this.soundController} switchKeyLayout = {this.switchKeyLayout}/>
             {this.state.multiplayer == true?<MultiplayerGrid playersData = {this.props.playersData}/>:''}
           <div className='wordle-game'>
             <LetterGrid ref={this.rowRef} row = {this.state.currentRow} tiles = {this.state.tiles} currentTile = {this.state.currentTile}/>
@@ -414,6 +454,8 @@ class Wordle extends React.Component{
             <Keyboard submit={this.submit} input = {this.handleKeyInput} delete={this.delete} keyLayout={this.state.keyLayout}/>
           </div>
         </div>
+        :
+        <Loader />
     )
   }
 }

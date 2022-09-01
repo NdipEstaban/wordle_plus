@@ -1,6 +1,8 @@
 import React from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 
+import { shareGame } from '../models/dataMolders';
+
 var letterInterval;
 class Home extends React.Component{
     constructor(props){
@@ -61,8 +63,8 @@ class Home extends React.Component{
                 <div class='home-controls'>
                     <button id='play-btn' onClick={this.play}>PLAY</button>
                     <button id='play-friends-btn' onClick={this.playWithFriends}>PLAY WITH FRIENDS</button>
-                    <button id='share-btn'>SHARE</button>
-                    <button id='about-btn'>ABOUT</button>
+                    <button id='share-btn' onClick={() => shareGame()}>SHARE</button>
+                    <a href="mailto:wordleplus@gmail.com"><button id='about-btn'>FEEDBACK</button></a>
                 </div>
             </div>
         );

@@ -1,12 +1,15 @@
 import React from 'react';
 import '../style/JoinSession.css';
 
+import Loader from '../components/Loader';
+import DialogBox from '../components/DialogBox';
+
 class JoinSession extends React.Component{
     constructor(props){
         super(props);
 
         this.state = {
-            key:''
+            key:'',
         };
 
         this.inputKey = this.inputKey.bind(this);
@@ -28,15 +31,18 @@ class JoinSession extends React.Component{
 
     render(){
         return(
+            this.props.loaded == false?
+            <Loader />
+            :
             <div className="join-session">
-                <div className="form">
-                    <label for='session-key'>
-                        Session key
-                        <input type='text' id='session-key' onChange={this.inputKey} placeholder='obtain session key from your friend'></input>
-                    </label>
-                    <button onClick={this.joinRoom}>Join</button>
-                </div>
+            <div className="form">
+                <label for='session-key'>
+                    Session key
+                    <input type='text' id='session-key' onChange={this.inputKey} placeholder='obtain session key from your friend'></input>
+                </label>
+                <button onClick={this.joinRoom}>Join</button>
             </div>
+        </div>
         )
     }
 }

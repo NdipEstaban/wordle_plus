@@ -1,6 +1,8 @@
 import React from "react";
 import '../style/MultiplayerConnection.css';
 
+import Loader from "../components/Loader";
+
 class MultiplayerConnection extends React.Component{
     constructor(props){
         super(props);
@@ -15,31 +17,31 @@ class MultiplayerConnection extends React.Component{
         this.joinSession = this.joinSession.bind(this);
     }
 
+    componentDidMount(){
+        if(this.props.playerName.length >= 2){
+            this.props.navigate('/playground');
+        }
+    }
+
     handleName(e){
-        let name = e.target.value;
-        this.setState({
-            ...this.state,
-            name:name
-        });
+        this.props.setName(e.target.value);
     }
 
     createSession(){
-        if(this.state.name.length < 2){
-            alert('enter a name so your friends can recognize you');
+        if(this.props.playerName.length < 2){
+            alert('Sorry, please enter a valid name so your friends can recognize you');
         }
         else{
             this.props.setMultiplayer(true);
-            this.props.setName(this.state.name);
-            this.props.createSession(this.state.name);
+            this.props.createSession();
             this.props.navigate('/playground');
         }
     }
 
     joinSession(){
-        if(this.state.name < 2){
+        if(this.props.playerName < 2){
             alert('enter a name so your friends can recognize you');
         }else{
-            this.props.setName(this.state.name);
             this.props.navigate('/join');
         }
     }
@@ -48,6 +50,9 @@ class MultiplayerConnection extends React.Component{
 
     render(){
         return(
+            this.props.loaded == false?
+            <Loader />
+            :
             <div className="multiplayer-conn">
                 <label>Name
                 <input type='text' placeholder="enter your name" maxLength={10} minLength={2} onChange={(e) => this.handleName(e)}/>

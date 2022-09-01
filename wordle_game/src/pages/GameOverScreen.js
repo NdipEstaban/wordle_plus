@@ -1,7 +1,15 @@
 import React from "react";
 import '../style/GameOverScreen.css';
+import {faStopwatch,faBullseye} from '@fortawesome/free-solid-svg-icons';
+import '@fortawesome/react-fontawesome';
+
 import mockery from '../audio/mockery.mp3';
 import winner from '../audio/success.mp3';
+
+import { shareData } from "../models/dataMolders";
+
+import Loader from '../components/Loader';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 let lostSound = new Audio(mockery);
 let winSound = new Audio(winner);
@@ -29,12 +37,13 @@ class GameOverScreen extends React.Component{
         super(props);
 
         this.state = {
+            loaded:false,
             tilesColor:this.props.playerStats.win == true?green:white,
             wordDetails:[
                 {meanings:[
                     {definitions:[
-                        {definition:'😓Network issues',
-                        example:'sorry😓, there are no examples for this word',
+                        {definition:'😓Sorry, some connection issues',
+                        example:'',
                     }
                     ]}
                 ]}
@@ -44,6 +53,7 @@ class GameOverScreen extends React.Component{
             emoji:(this.props.playerStats.win == true)?emojis.win[randomInt]:emojis.lost[randomInt]
             // emoji:this.props.playerStats.win == true?emojis.win[randomInt]:emojis.loss[randomInt]
         };
+
     }
 
     componentDidMount(){
@@ -51,10 +61,18 @@ class GameOverScreen extends React.Component{
             this.setState({
                 ...this.state, 
                 wordDetails:res,
+                loaded:true,
             });
         }).catch((e) => {
-            
+            console.log('wordle-plus');
         });
+
+        setTimeout(() => {
+            this.setState({
+                ...this.state,
+                loaded:true
+            })
+        }, 5000);
 
         //Play a sound according playerStats
         if(this.state.playerStats.win == true){
@@ -63,10 +81,13 @@ class GameOverScreen extends React.Component{
             lostSound.play();
         }
 
-        }
+    }
 
     render(){
         return(
+            this.state.loaded == false?
+            <Loader />
+            :
             <div className='game-over-container'>
                 <div className='game-emoji'>
                     {this.state.emoji}
@@ -80,7 +101,7 @@ class GameOverScreen extends React.Component{
                               return (
                                 <div class="player-grid-row">
                                   {row.map((tile) => {
-                                    return <div className="grid-circle"></div>
+                                    return <div className="grid-circle" style={{background:tile}}></div>
                                   })}
                                 </div>
                               )
@@ -88,8 +109,8 @@ class GameOverScreen extends React.Component{
                           </div>
                     
                     </div>
-                    <h3>{this.state.playerStats.time}</h3>
-                    <h3>{this.state.playerStats.row}/6</h3>
+                    <h3 className="player-stats"><FontAwesomeIcon icon={faStopwatch}/><span>{this.state.playerStats.time}</span></h3>
+                    <h3 className="player-stats"><FontAwesomeIcon icon={faBullseye}/><span>{this.state.playerStats.row}/6</span></h3>
                 </div>
                 {/*When not in multiplayer mode the definition of the word is displayed*/ }
                 {this.props.multiplayer == false?
@@ -119,7 +140,7 @@ class GameOverScreen extends React.Component{
             {this.props.finishedPlayers.map((player, index) => {
                 return(
                     <tr>
-                        <td>{index}</td>
+                        <td>{index + 1}</td>
                         <td>{player.name}</td>
                         <td>{player.row}/6</td>
                         <td>{(player.time <= 60)?`0:${player.time % 60}`:`${Math.round(this.player.time/60)}:${player.time % 60}`}</td>
@@ -133,8 +154,13 @@ class GameOverScreen extends React.Component{
                 
             </div>
             <div className="game-over-btns">
-                <button>Play again</button>
-                <button>Home</button>
+                {/*Display "play again" button only when not in multiplayer */}
+                {this.props.multiplayer == false?
+                <button onClick={() => this.props.playAgain()}>Play again</button>
+                :
+                ''}
+                <button onClick={() => shareData(this.props.playerStats)}>Share</button>
+                <button onClick={() => this.props.navigate('/')}>Home</button>
             </div>
             </div>
         )

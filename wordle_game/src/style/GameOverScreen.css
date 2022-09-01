@@ -15,6 +15,14 @@
     padding:0;
 }
 
+.game-over .player-stats{
+    display:flex;
+    width:60%;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+}
+
 .game-emoji{
     font-size:25rem;
     position:absolute;
@@ -56,6 +64,7 @@
     font-size:2rem;
     padding:1rem;
     color:white;
+    overflow: auto;
 }
 
 .word-details .word-defn, .word-examples{
@@ -130,7 +139,7 @@
 }
 
 .game-over-btns button{
-    width:45%;
+    width:30%;
     height:4rem;
     border:0;
     border-radius:10px;

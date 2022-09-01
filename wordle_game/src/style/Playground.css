@@ -88,9 +88,8 @@ h1 sup{
   background:rgb(255, 255, 255);
   position:absolute;
   backdrop-filter: blur(10px);
-  inset:3px;
+  inset:4px;
   border-radius:5px;
-
 }
 
 @keyframes current-tile {
@@ -216,7 +215,7 @@ h1 sup{
   background:rgba(255,255,255,0.5);
   backdrop-filter: blur(10px);
   width:5rem;
-  height:18.5rem;
+  height:20rem;
   display:grid;
   grid-gap:0.5rem;
   text-align:center;
@@ -225,6 +224,31 @@ h1 sup{
   align-content: center;
   justify-content: center;
   border-radius:5px;
+}
+
+.control-panel .control-panel-logo{
+  width:4rem;
+  border-radius:5px;
+  margin:0 0 1.5rem 0;
+  animation:logo-animation 5s ease infinite;
+}
+
+@keyframes logo-animation {
+  0%{
+      transform:translateY(1px) rotate(5deg);
+  }
+  25%{
+      transform:translateY(-1px) rotate(0deg);
+  }
+  50%{
+      transform:translateY(1px) rotate(-5deg);
+  }
+  75%{
+      transform:translateY(-1px) rotate(0deg);
+  }
+  100%{
+      transform:translateY(1px) rotate(5deg);
+  }
 }
 
 .control-panel h2{

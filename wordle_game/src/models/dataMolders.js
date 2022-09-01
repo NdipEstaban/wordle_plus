@@ -104,3 +104,64 @@ export function changeTilesColor({tiles = 1, word:word,rowIndex = 3} = {}){
 
     return tiles;
 }
+
+export async function shareData(playerStats){
+    let grid = playerStats.grid;
+    let time = playerStats.time;
+    let win = playerStats.win;
+    let row = playerStats.row;
+    let message = `checkout my score \n\n⏱️${time}`;
+
+    for(let i = 0; i < grid.length;i++){
+        let row = ['\n'];
+        for(let j = 0; j < grid[i].length; j++){
+            if(grid[i][j] == green){
+                row.push('🟩');
+            }else if(grid[i][j] == orange){
+                row.push('🟧');
+            }else{
+                row.push('⬜');
+            }
+        }
+        row = row.join('');
+        message += row;
+    }
+    
+    message += '\n\nwww.wordle-plus.com';
+    
+    if(navigator.share){
+        try{
+            await navigator.share({text:message});
+        }catch(error){
+            alert("Oops! please try again");
+        }
+    }else{
+        alert("Ooww! Your browser does not support sharing, please use a compatible browser");
+    }
+
+}
+
+
+export async function shareGame(){
+    if(navigator.share){
+        try{
+            await navigator.share({text:"Learn new words while having fun with friends😊 \nwww.wordle-plus.com"});
+        }catch(error){
+            alert("Oops! please try again");
+        }
+    }else{
+        alert("Ooww! Your browser does not support sharing, please use a compatible browser");
+    }
+}
+
+export async function invitePlayer(sessionKey){
+    if(navigator.share){
+        try{
+            await navigator.share({text:`Here is my session key ${sessionKey}\n join me let's play wordle on \nwww.wordle-plus.com/multiplayer`})
+        }catch{
+            alert("Oops! please try again");
+        }
+    }else{
+        alert("Ooww! Your browser does not support sharing, please use a compatible browser");
+    }
+}

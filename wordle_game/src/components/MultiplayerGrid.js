@@ -4,46 +4,46 @@ import {faArrowUp, faArrowDown} from "@fortawesome/free-solid-svg-icons";
 
 const tiles = [
     [
-      {id:1, value:`t7`, color:''},
-      {id:2, value:`t1`, color:''},
-      {id:3, value:`t1`, color:''},
-      {id:4, value:`t1`, color:''},
-      {id:5, value:`t1`, color:''}
+      {id:1, value:``, color:''},
+      {id:2, value:``, color:''},
+      {id:3, value:``, color:''},
+      {id:4, value:``, color:''},
+      {id:5, value:``, color:''}
     ],
     [
-      {id:6, value:`t7`, color:''},
-      {id:7, value:`t1`, color:''},
-      {id:8, value:`t2`, color:''},
-      {id:9, value:`t1`, color:''},
-      {id:10, value:`t1`, color:''}
+      {id:6, value:``, color:''},
+      {id:7, value:``, color:''},
+      {id:8, value:``, color:''},
+      {id:9, value:``, color:''},
+      {id:10, value:``, color:''}
     ],
     [
-      {id:11, value:`t7`, color:''},
-      {id:12, value:`t1`, color:''},
-      {id:13, value:`t3`, color:''},
-      {id:14, value:`t1`, color:''},
-      {id:15, value:`t1`, color:''}
+      {id:11, value:``, color:''},
+      {id:12, value:``, color:''},
+      {id:13, value:``, color:''},
+      {id:14, value:``, color:''},
+      {id:15, value:``, color:''}
     ],
     [
-      {id:16, value:`t7`, color:''},
-      {id:17, value:`t1`, color:''},
-      {id:18, value:`t4`, color:''},
-      {id:19, value:`t1`, color:''},
-      {id:20, value:`t1`, color:''}
+      {id:16, value:``, color:''},
+      {id:17, value:``, color:''},
+      {id:18, value:``, color:''},
+      {id:19, value:``, color:''},
+      {id:20, value:``, color:''}
     ],
       [
-      {id:21, value:`t7`, color:''},
-      {id:22, value:`t1`, color:''},
-      {id:23, value:`t5`, color:''},
-      {id:24, value:`t1`, color:''},
-      {id:25, value:`t1`, color:''}
+      {id:21, value:``, color:''},
+      {id:22, value:``, color:''},
+      {id:23, value:``, color:''},
+      {id:24, value:``, color:''},
+      {id:25, value:``, color:''}
     ],
     [
-      {id:26, value:`t7`, color:''},
-      {id:27, value:`t1`, color:''},
-      {id:28, value:`t6`, color:''},
-      {id:29, value:`t1`, color:''},
-      {id:30, value:`t1`, color:''}
+      {id:26, value:``, color:''},
+      {id:27, value:``, color:''},
+      {id:28, value:``, color:''},
+      {id:29, value:``, color:''},
+      {id:30, value:``, color:''}
     ],
   ];
   
@@ -111,7 +111,10 @@ class MultiplayerGrid extends React.Component{
     constructor(props){
         super(props);
 
-        this.playersRef = React.createRef();        
+        this.playersRef = React.createRef();
+        
+        this.scrollUp = this.scrollUp.bind(this);
+        this.scrollDown = this.scrollDown.bind(this);
     }
 
     componentDidMount(){
@@ -123,17 +126,30 @@ class MultiplayerGrid extends React.Component{
         if(Math.round(scrollList.scrollHeight - scrollList.scrollTop) == scrollList.clientHeight){
           scrollList.scrollTo(0, 0);
         }else{
-          scrollList.scrollBy(0,scrollSpeed);
+          scrollList.scrollBy({top:50, behavior:'smooth'});
         }
       };
 
-      scrolldelay = setInterval(scroll,100);
-    }    
+      scrolldelay = setInterval(scroll,2000);
+    }
+    
+    scrollDown(){
+      let scrollList = this.playersRef.current;
+      scrollList.scrollBy({top:50, behavior:'smooth'});
+      console.log('down');
+
+    }
+
+    scrollUp(){
+      let scrollList = this.playersRef.current;
+      scrollList.scrollBy({top:-50, behavior:'smooth'});
+      console.log('up');
+    }
 
     render(){
         return(
             <div class='multiplayer-carousel'>
-                <button id='carousel-btn-forward' className = "carousel-btn" onClick={(n) => this.moveGrid('up')} aria-label='carousel-forward'>
+                <button id='carousel-btn-forward' className = "carousel-btn" onClick={() => this.scrollUp()} aria-label='carousel-forward'>
                   <FontAwesomeIcon icon={faArrowUp}></FontAwesomeIcon>
                 </button>
 
@@ -149,7 +165,7 @@ class MultiplayerGrid extends React.Component{
                                     return <div className="grid-circle" style={{background:tile}}></div>
                                   })}
                                 </div>
-                              )
+                              );
                             })}
                           </div>
                           <div className="player-name">{player.name}</div>
@@ -157,7 +173,7 @@ class MultiplayerGrid extends React.Component{
                       )
                     })}
                 </ul>
-                <button id='carousel-btn-backward' onClick={() => this.moveGrid('down')} className="carousel-btn" aria-label='carousel-backward'>
+                <button id='carousel-btn-backward' onClick={() => this.scrollDown()} className="carousel-btn" aria-label='carousel-backward'>
                   <FontAwesomeIcon icon={faArrowDown}></FontAwesomeIcon>
                 </button>'
             </div>
