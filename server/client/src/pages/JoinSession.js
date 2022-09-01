@@ -1,6 +1,8 @@
 import React from 'react';
 import '../style/JoinSession.css';
 
+import { Helmet } from 'react-helmet-async';
+
 import Loader from '../components/Loader';
 import DialogBox from '../components/DialogBox';
 
@@ -35,6 +37,9 @@ class JoinSession extends React.Component{
             <Loader />
             :
             <div className="join-session">
+                <Helmet>
+                    <meta name='robots' content='noindex' />
+                </Helmet>
             <div className="form">
                 <label for='session-key'>
                     Session key

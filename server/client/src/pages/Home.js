@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 import { shareGame } from '../models/dataMolders';
 
@@ -37,6 +38,11 @@ class Home extends React.Component{
     render(){
         return(
             <div className='home'>
+                <Helmet>
+                    <title>Wordle plus</title>
+                    <meta name='description' content="Multiplayer wordle game, play wordle with your friends and have fun while learning new words" />
+                    <link rel='canonical' href='/' />
+                </Helmet>
                 <h1 className="home-title">
                     <div className={(this.state.currentTile == 0)?'game-title-letter input-animation':'game-title-letter'} id="title-letter-W">
                         <span>W</span>
@@ -64,7 +70,7 @@ class Home extends React.Component{
                     <button id='play-btn' onClick={this.play}>PLAY</button>
                     <button id='play-friends-btn' onClick={this.playWithFriends}>PLAY WITH FRIENDS</button>
                     <button id='share-btn' onClick={() => shareGame()}>SHARE</button>
-                    <a href="mailto:wordleplus@gmail.com"><button id='about-btn'>FEEDBACK</button></a>
+                    <a href="mailto:wordleplus@gmail.com"><button id='about-btn'>CONTACT</button></a>
                 </div>
             </div>
         );

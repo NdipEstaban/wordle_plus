@@ -3,6 +3,8 @@ import '../style/GameOverScreen.css';
 import {faStopwatch,faBullseye} from '@fortawesome/free-solid-svg-icons';
 import '@fortawesome/react-fontawesome';
 
+import { Helmet } from "react-helmet-async";
+
 import mockery from '../audio/mockery.mp3';
 import winner from '../audio/success.mp3';
 
@@ -89,6 +91,9 @@ class GameOverScreen extends React.Component{
             <Loader />
             :
             <div className='game-over-container'>
+                <Helmet>
+                    <meta name='robots' content='noindex' />
+                </Helmet>
                 <div className='game-emoji'>
                     {this.state.emoji}
                 </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import '../style/MultiplayerConnection.css';
+import { Helmet } from "react-helmet-async";
 
 import Loader from "../components/Loader";
 
@@ -54,6 +55,11 @@ class MultiplayerConnection extends React.Component{
             <Loader />
             :
             <div className="multiplayer-conn">
+                <Helmet>
+                    <title>Play with friends</title>
+                    <meta name='description' content="challenge your friends to a multiplayer wordle game and build your vocabulary" />
+                    <link rel="canonical" href="/multiplayer" />
+                </Helmet>
                 <label>Name
                 <input type='text' placeholder="enter your name" maxLength={10} minLength={2} onChange={(e) => this.handleName(e)}/>
                 </label>

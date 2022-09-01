@@ -4,12 +4,15 @@ import './index.css';
 import Wordle from './App';
 import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
+import {HelmetProvider} from 'react-helmet-async';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
     <React.StrictMode>
-      <Wordle />
+      <HelmetProvider>
+        <Wordle />
+      </HelmetProvider>
     </React.StrictMode>
   </BrowserRouter>
 );

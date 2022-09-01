@@ -1,5 +1,6 @@
 import React from 'react';
 import '../style/Playground.css';
+import { Helmet } from 'react-helmet-async';
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPeopleGroup} from '@fortawesome/free-solid-svg-icons';
@@ -444,6 +445,11 @@ class Wordle extends React.Component{
     return(
         this.state.loaded == true?
         <div>
+          <Helmet>
+            <title>Wordle+</title>
+            <meta name='description' content='play wordle as much as you want and learn the meaning of each word, equally multiplayer wordle game' />
+            <link rel='canonical' href='/playground' />
+          </Helmet>
           {this.state.gameGuide == true?<GameGuide toggleGameGuide={this.toggleGameGuide}/>:''}
             <DialogBox ref={this.dialogRef} message={this.state.message}/>
             <ControlPanel multiplayer={this.props.multiplayer} toggleGameGuide={this.toggleGameGuide} sessionKey={this.props.sessionKey} soundController = {this.soundController} switchKeyLayout = {this.switchKeyLayout}/>
