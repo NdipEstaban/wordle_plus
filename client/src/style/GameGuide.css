@@ -1,0 +1,109 @@
+.game-guide{
+    position: absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%, -50%);
+    font-size:1.5rem;
+    padding:1rem;
+
+    width:70rem;
+    background:rgba(255,255,255, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius:10px;
+    border:0;
+    margin:0;
+    z-index:10;
+}
+
+.game-guide h1{
+    text-align:center;
+    margin:0;
+}
+
+.game-guide #close-btn{
+    position:absolute;
+    right:0;
+    top:0;
+    background:orangered;
+    border:0;
+    height: 5rem;
+    width:5rem;
+    font-size:2.5rem;
+    border-radius:0 10px 0 10px;
+    color:white;
+}
+
+.game-guide #close-btn:hover{
+    background:red;
+    transform:scale(1.2);
+    border:2px solid black;
+}
+
+.game-guide #close-btn:active{
+    background:red;
+    transform:scale(1.2);
+    border:2px solid black;
+    transform:translateY(5px) scale(1.2);
+}
+
+.game-guide .example-word{
+    display:flex;
+    flex-direction:row;
+}
+
+.game-guide .example-word-letter{
+    background:white;
+    margin:0 0.5rem;
+    text-align:center;
+    border-radius:5px;
+    padding:1rem;
+    font-weight: bold;
+}
+
+.guide-unvisible{
+    visibility: hidden;
+}
+
+.game-guide #success-letter{
+    background:#97e61b ;
+}
+
+.game-guide #failure-letter{
+    background:#e69c1b ;
+}
+
+@media screen and (max-width:750px){
+    .game-guide{
+        position: absolute;
+        left:50%;
+        top:50%;
+        transform:translate(-50%, -50%);
+        font-size:2rem;
+        padding:1rem;
+    
+        width:95vw;
+        background:rgba(255,255,255, 0.7);
+        backdrop-filter: blur(10px);
+        border-radius:10px;
+        border:0;
+        margin:0;
+    }
+}
+
+@media  screen and (max-width:300px) {
+    .game-guide{
+        position: absolute;
+        left:50%;
+        top:50%;
+        transform:translate(-50%, -50%);
+        font-size:1.8rem;
+        padding:1rem;
+    
+        width:90vw;
+        background:rgba(255,255,255, 0.7);
+        backdrop-filter: blur(10px);
+        border-radius:10px;
+        border:0;
+        margin:0;
+    }
+}

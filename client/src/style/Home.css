@@ -1,0 +1,231 @@
+
+.home{
+    display: block;
+    align-items: center;
+}
+
+.home-title{
+    text-align:center;
+    font-family: 'Roboto';
+    display:flex;
+    color:black;
+    position:fixed;
+    background:none;
+    top:6%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    animation: heading-shake 1s ease 7s, title-confirm 2s ease 13s;
+}
+.game-title-letter{
+    font-size: 5rem;
+    background:rgba(255,255,255,0.4);
+    backdrop-filter: blur(10px);
+    width:6rem;
+    height:6rem;
+    margin:1rem;
+    border-radius:5px;
+}
+
+.game-title-letter span{
+    z-index: 10;
+}
+
+.input-animation{
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    overflow: hidden;
+}
+
+.input-animation::before{
+    content:"";
+    width:3rem;
+    height:10rem;
+    /* background:linear-gradient(#00ccff,#d400d4); */
+    background: linear-gradient(#e69c1b,#97e61b);
+    position:absolute;
+    animation:input-animation  3s linear infinite;
+}
+
+.input-animation::after{
+    content:"";
+    background:rgb(255, 255, 255);
+    position:absolute;
+    backdrop-filter: blur(10px);
+    inset:3px;
+    border-radius:5px;
+}
+
+#title-letter-W span{
+    opacity: 1;
+    animation: letter-visibility 6s ease 0s;
+}
+
+#title-letter-O span{
+    opacity: 1;
+    animation: letter-visibility 3s ease 1.9s;
+}
+
+#title-letter-R span{
+    opacity: 1;
+    animation: letter-visibility 3s ease 2.9s;
+}
+
+#title-letter-D span{
+    opacity: 1;
+    animation: letter-visibility 3s ease 3.9s;
+}
+
+#title-letter-L span{
+    opacity: 1;
+    animation: letter-visibility 3s ease 4.9s;
+}
+
+#title-letter-E span{
+    opacity: 1;
+    animation: letter-visibility 3s ease 5.9s;
+}
+
+.plus-symbol{
+    color:white;
+    animation:plus-symbol 14s ease, plus-symbol-2 4s ease-in-out infinite 14s;
+}
+
+@keyframes plus-symbol {
+    0%{
+        opacity: 0;
+    }
+    25%{
+        opacity: 0;
+    }
+    50%{
+        opacity: 0;
+    }
+    95%{
+        opacity: 0;
+        transform: scale(2) rotate(0deg) translate(0%,0%);
+    }
+    100%{
+        transform: scale(1) rotate(1440deg) translate(0%,0%);
+    }
+
+}
+
+@keyframes plus-symbol-2 {
+    0%{
+        transform: scale(0.8);
+    }
+    50%{
+        transform:scale(1.2)
+    }
+    100%{
+        transform:scale(0.8)
+    }
+}
+
+@keyframes letter-visibility {
+    0%{
+        opacity: 0;
+    }
+
+    30%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+@keyframes input-animation {
+    0%{
+      transform:rotate(0deg);
+    }
+    100%{
+      transform:rotate(360deg);
+    }
+}
+
+@keyframes heading-shake {
+    0%{
+        transform:translate(-50%, -50%) rotateX(2deg);
+      }
+      20%{
+        transform:translate(-50%, -50%) rotate(-2deg);
+      }
+      40%{
+        transform:translate(-50%, -50%) rotate(-2deg);
+      }
+      60%{
+        transform:translate(-50%, -50%) rotate(2deg);
+      }
+      80%{
+        transform:translate(-50%, -50%) rotate(-2deg);
+      }
+      100%{
+        transform:translate(-50%, -50%) rotate(2deg);
+      }
+}
+
+@keyframes title-confirm{
+    0%{transform:translate(-50%,-50%) rotateX(0deg);}
+    50%{transform:translate(-50%,-50%)  rotateX(-180deg);}
+    100%{transform:translate(-50%,-50%) rotateX(-360deg);}
+}
+
+.home-controls{
+    background:rgba(255,255,255,0.5);
+    backdrop-filter: blur(10px);
+    width:30rem;
+    height:30rem;
+    border-radius:15px;
+    
+    position:absolute;
+    top:45%;
+    left:50%;
+    transform: translate(-50%, -50%) rotateZ(-1deg);
+
+    display:flex;
+    flex-direction: column;
+    justify-content:space-evenly;
+    align-items: center;
+}
+
+.home button{
+    background:white;
+    border:0;
+    border-radius:10px;
+    width:16rem;
+    height:5rem;
+    color:black;
+    font-weight: bold;
+    margin:0;
+}
+
+.home button:hover{
+    background:rgb(196, 233, 255);
+    border:1px solid white;
+    transform:scale(1.1)
+}
+
+.home button:active{
+    background:#97e61b;
+}
+
+#play-btn{
+    transform: rotateZ(2deg);
+}
+
+#play-friends-btn{
+    width:20rem;
+    transform:rotateZ(-2deg);
+}
+
+#share-btn{
+    width: 11rem;
+    transform:rotateZ(2deg);
+}
+
+#about-btn{
+    width:13rem;
+    transform:rotateZ(-2deg);
+}

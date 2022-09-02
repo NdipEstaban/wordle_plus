@@ -78,10 +78,15 @@ io.on("connection", (socket) => {
 });
 
 
-server.listen(3001, () => {
+server.listen(process.env.PORT || 3001, () => {
     console.log("Server is running");
 });
 
+app.use(express.static(path.join(__dirname, "/client")));
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+});
 //useful functions
 
 function sessionKeyGenerator(n, length=3){
