@@ -1,12 +1,16 @@
 const express = require('express');
 const app = express();
+
 const http = require('http');
+//const http = require('http'); to run on local machine
+
 const {Server} = require('socket.io');
 const cors = require("cors");
 const { finished: playDone } = require('stream');
 const { type } = require('os');
 
 app.use(cors());
+app.use(express.static(__dirname + '/../..build')); //Remove if not work
 
 const server = http.createServer(app);
 
@@ -82,11 +86,6 @@ server.listen(process.env.PORT || 3001, () => {
     console.log("Server is running");
 });
 
-app.use(express.static(path.join(__dirname, "/client")));
-
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
-});
 //useful functions
 
 function sessionKeyGenerator(n, length=3){
